@@ -45,7 +45,7 @@ export const getProducts = async ({ category, featured, search, limit } = {}) =>
     let query = supabase
       .from('products')
       .select('*')
-      .eq('in_stock', true)
+      .eq('is_active', true)
       .order('created_at', { ascending: false })
 
     if (category) query = query.eq('category', category)
