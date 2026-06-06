@@ -25,10 +25,11 @@ export default function ProductCard({ product }) {
   }
 
   const handleFav = (e) => {
-    e.stopPropagation()
-    toggle(product.id)
-    toast(isFav ? 'Retiré des favoris' : 'Ajouté aux favoris ❤️', { duration: 1500 })
-  }
+  e.stopPropagation()
+  e.preventDefault()
+  toggle(product.id)
+  toast(isFav ? 'Retiré des favoris' : 'Ajouté aux favoris ❤️', { duration: 1500 })
+}
 
   return (
     <div className={styles.card}>
@@ -56,12 +57,13 @@ export default function ProductCard({ product }) {
         </div>
 
         <button
-          className={`${styles.favBtn} ${isFav ? styles.favActive : ''}`}
-          onClick={handleFav}
-          aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+        className={`${styles.favBtn} ${isFav ? styles.favActive : ''}`}
+        onClick={handleFav}
+        onTouchEnd={handleFav}
+        aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
         >
-          <Heart size={16} fill={isFav ? '#d4537e' : 'none'} />
-        </button>
+  <Heart size={16} fill={isFav ? '#d4537e' : 'none'} />
+</button>
       </div>
 
       {/* Info */}

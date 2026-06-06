@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingBag, Search, Heart, User, Menu, X } from 'lucide-react'
 import { useCartStore, useAuthStore, selectCount } from '@/lib/store'
 import styles from './Navbar.module.css'
+import { isAdmin } from '@/lib/admin'
 
 export default function Navbar() {
   const [query, setQuery] = useState('')
@@ -75,19 +76,32 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className={styles.mobileMenu}>
-          <Link to="/search" onClick={() => setMenuOpen(false)}>Produits</Link>
-          <Link to="/favoris" onClick={() => setMenuOpen(false)}>Commandes</Link>
-          <Link to="/panier" onClick={() => setMenuOpen(false)}>Vendus</Link>
-          {user ? (
-            <Link to="/compte" onClick={() => setMenuOpen(false)}>Mon compte</Link>
-          ) : (
-            <Link to="/connexion" className="btn btn-primary btn-sm" onClick={() => setMenuOpen(false)}>
-              Connexion
-            </Link>
-          )}
-        </div>
-      )}
+  <div className={styles.mobileMenu}>
+    {user && isAdmin(user) ? (
+      // Menu ADMIN
+      <>
+        <Link to="/accueil" onClick={() => setMenuOpen(false)}>📦 Produits</Link>
+        <Link to="/commandes" onClick={() => setMenuOpen(false)}>🛍️ Commandes</Link>
+        <Link to="/vendus" onClick={() => setMenuOpen(false)}>✅ Vendus</Link>
+        <Link to="/compte" onClick={() => setMenuOpen(false)}>👤 Mon compte</Link>
+      </>
+    ) : (
+      // Menu UTILISATEUR
+      <>
+        <Link to="/" onClick={() => setMenuOpen(false)}>🏠 Accueil</Link>
+        <Link to="/favoris" onClick={() => setMenuOpen(false)}>❤️ Favoris</Link>
+        <Link to="/panier" onClick={() => setMenuOpen(false)}>🛍️ Panier</Link>
+        {user ? (
+          <Link to="/compte" onClick={() => setMenuOpen(false)}>👤 Mon compte</Link>
+        ) : (
+          <Link to="/connexion" className="btn btn-primary btn-sm" onClick={() => setMenuOpen(false)}>
+            Connexion
+          </Link>
+        )}
+      </>
+    )}
+  </div>
+)}
     </nav>
   )
 }
