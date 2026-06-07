@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom'
 import { MapPin, Phone, Heart } from 'lucide-react'
 import styles from './Footer.module.css'
 
-const WHATSAPP = '2250716165032'
+const WHATSAPP = '2250703781067'
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP}?text=Bonjour%2C%20je%20souhaite%20passer%20une%20commande%20!`
 const MAPS_URL = 'https://maps.app.goo.gl/8YRd6HHA9quxbLqx6'
-const PHONE = '+2250716165032'
+const PHONE = '+2250703781067'
 
 export default function Footer() {
   return (
@@ -32,22 +31,18 @@ export default function Footer() {
             </div>
             <div>
               <div className={styles.cardLabel}>WhatsApp</div>
-              <div className={styles.cardValue}>+225 07 16 16 50 32</div>
+              <div className={styles.cardValue}>+225 07 03 78 10 67</div>
             </div>
             <svg className={styles.arrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
 
-          <a
-            href={`tel:${PHONE}`}
-            className={styles.card}
-            onClick={() => navigator.clipboard?.writeText(PHONE)}
-          >
+          <a href={`tel:${PHONE}`} className={styles.card} onClick={() => navigator.clipboard?.writeText(PHONE)}>
             <div className={styles.icon}>
               <Phone size={20} />
             </div>
             <div>
               <div className={styles.cardLabel}>Appeler</div>
-              <div className={styles.cardValue}>+225 07 16 16 50 32</div>
+              <div className={styles.cardValue}>+225 07 03 78 10 67</div>
             </div>
             <svg className={styles.arrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>

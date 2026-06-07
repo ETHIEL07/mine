@@ -10,7 +10,7 @@ import { supabase } from '@/lib/supabase'
 import toast from 'react-hot-toast'
 import styles from './Cart.module.css'
 
-const WHATSAPP_NUMBER = '2250716165032'
+const WHATSAPP_NUMBER = '2250703781067'
 
 function buildWALivraison(name, email) {
   return encodeURIComponent(
