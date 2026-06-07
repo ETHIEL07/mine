@@ -11,6 +11,7 @@ import Navbar from '@/components/layout/Navbar';
 import BottomNav from '@/components/layout/BottomNav';
 import AdminBottomNav from '@/components/layout/AdminBottomNav';
 import Footer from '@/components/layout/Footer';
+import InstallPrompt from '@/components/InstallPrompt';
 
 import Home from '@/pages/Home';
 import AdminHome from '@/pages/AdminHome';
@@ -43,8 +44,6 @@ function Loading() {
   );
 }
 
-// Garde : redirige vers /connexion si non connecté
-// adminOnly=true → redirige les non-admins vers /accueil
 function PrivateRoute({ children, adminOnly = false }) {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUserLocal] = useState(null);
@@ -79,7 +78,6 @@ function AppLayout() {
   const [currentUser, setCurrentUser] = useState(null);
   const isAuthPage = AUTH_PATHS.includes(location.pathname);
 
-  // Récupérer l'utilisateur courant pour choisir la nav
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setCurrentUser(session?.user || null);
@@ -98,24 +96,17 @@ function AppLayout() {
 
       <Routes>
         <Route path="/" element={<Navigate to="/connexion" replace />} />
-
-        {/* Pages publiques */}
         <Route path="/connexion"     element={<Auth />} />
         <Route path="/inscription"   element={<Auth />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
-
-        {/* Pages admin (réservées) */}
         <Route path="/accueil"   element={
           <PrivateRoute>
-            {/* L'admin va sur AdminHome, le user sur Home */}
             <AdminAwareHome />
           </PrivateRoute>
         } />
         <Route path="/commandes" element={<PrivateRoute adminOnly><AdminOrders /></PrivateRoute>} />
         <Route path="/vendus"    element={<PrivateRoute adminOnly><AdminSold /></PrivateRoute>} />
         <Route path="/produits"  element={<PrivateRoute adminOnly><AdminProducts /></PrivateRoute>} />
-
-        {/* Pages utilisateur */}
         <Route path="/search"         element={<PrivateRoute><Search /></PrivateRoute>} />
         <Route path="/produit/:id"    element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
         <Route path="/panier"         element={<PrivateRoute><Cart /></PrivateRoute>} />
@@ -128,6 +119,7 @@ function AppLayout() {
 
       {!isAuthPage && <Footer />}
       {!isAuthPage && (userIsAdmin ? <AdminBottomNav /> : <BottomNav />)}
+      {!isAuthPage && <InstallPrompt />}
 
       <Toaster
         position="bottom-center"
@@ -140,7 +132,6 @@ function AppLayout() {
   );
 }
 
-// Composant qui redirige /accueil selon le rôle
 function AdminAwareHome() {
   const [loading, setLoading] = useState(true);
   const [adminUser, setAdminUser] = useState(false);
