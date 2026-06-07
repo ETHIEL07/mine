@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function InstallPrompt() {
   const [show, setShow] = useState(false)
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  const isAndroid = /android/i.test(navigator.userAgent)
 
   useEffect(() => {
-    const ua = navigator.userAgent
-    const isIOS = /iphone|ipad|ipod/i.test(ua)
     const isStandalone =
       navigator.standalone === true ||
       window.matchMedia('(display-mode: standalone)').matches
 
-    // Afficher seulement sur iOS et seulement si pas encore installé
-    if (isIOS && !isStandalone) {
-      // Ne pas afficher si l'utilisateur a déjà fermé la bannière
-      const dismissed = localStorage.getItem('install-dismissed')
-      if (!dismissed) setShow(true)
+    if (isStandalone) return
+
+    const dismissed = localStorage.getItem('install-dismissed')
+    if (dismissed) return
+
+    if (isIOS || isAndroid) {
+      // Afficher seulement si l'utilisateur est connecté
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) setShow(true)
+      })
     }
   }, [])
 
@@ -42,7 +48,10 @@ export default function InstallPrompt() {
           Installer BagStyle
         </div>
         <div style={{ fontSize: 13, color: '#666', lineHeight: 1.4 }}>
-          Appuyez sur <strong>⬆️</strong> puis <strong>"Sur l'écran d'accueil"</strong> pour utiliser l'app sans navigateur.
+          {isIOS
+            ? <>Appuyez sur <strong>⬆️</strong> puis <strong>"Sur l'écran d'accueil"</strong> pour utiliser l'app sans navigateur.</>
+            : <>Appuyez sur <strong>⋮</strong> puis <strong>"Ajouter à l'écran d'accueil"</strong> pour utiliser l'app sans navigateur.</>
+          }
         </div>
       </div>
       <button
