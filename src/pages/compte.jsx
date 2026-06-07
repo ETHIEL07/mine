@@ -142,11 +142,13 @@ export default function Compte() {
           <button
             className="btn btn-outline"
             style={{ width: '100%', justifyContent: 'center' }}
-            onClick={async () => {
-              const { error } = await supabase.auth.resetPasswordForEmail(user.email)
-              if (error) toast.error('Erreur')
-              else toast.success('Email de réinitialisation envoyé ✅')
-            }}
+           onClick={async () => {
+  const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  })
+  if (error) toast.error('Erreur')
+  else toast.success('Email de réinitialisation envoyé ✅')
+}}
           >
             Changer le mot de passe
           </button>

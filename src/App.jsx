@@ -26,8 +26,10 @@ import Favorites from '@/pages/Favorites';
 import Boutiques from '@/pages/Boutiques';
 import Compte from '@/pages/compte';
 import Promotions from '@/pages/Promotions';
+import MotDePasseOublie from '@/pages/MotDePasseOublie';
+import ResetPassword from '@/pages/ResetPassword';
 
-const AUTH_PATHS = ['/connexion', '/inscription', '/auth/callback'];
+const AUTH_PATHS = ['/connexion', '/inscription', '/auth/callback', '/mot-de-passe-oublie', '/reset-password'];
 
 function Loading() {
   return (
@@ -96,10 +98,12 @@ function AppLayout() {
 
       <Routes>
         <Route path="/" element={<Navigate to="/connexion" replace />} />
-        <Route path="/connexion"     element={<Auth />} />
-        <Route path="/inscription"   element={<Auth />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/accueil"   element={
+        <Route path="/connexion"            element={<Auth />} />
+        <Route path="/inscription"          element={<Auth />} />
+        <Route path="/auth/callback"        element={<AuthCallback />} />
+        <Route path="/mot-de-passe-oublie"  element={<MotDePasseOublie />} />
+        <Route path="/reset-password"       element={<ResetPassword />} />
+        <Route path="/accueil" element={
           <PrivateRoute>
             <AdminAwareHome />
           </PrivateRoute>
