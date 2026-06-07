@@ -23,8 +23,9 @@ export const signInWithGoogle = () => {
   return supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `https://mine-git-main-ethiel07s-projects.vercel.app/auth/callback`,
       queryParams: { prompt: 'consent' },
+      skipBrowserRedirect: false,
     },
   })
 }
