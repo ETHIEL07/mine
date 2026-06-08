@@ -12,11 +12,19 @@ function EditProductModal({ product, onClose, onSaved }) {
     old_price:   product.old_price || '',
     image_url:   product.image_url || '',
     is_featured: product.is_featured || false,
+    category_id: product.category_id || '',
   })
+  const [categories, setCategories] = useState([])
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving]       = useState(false)
   const [preview, setPreview]     = useState(product.image_url || '')
   const fileRef = useRef()
+
+  useEffect(() => {
+    supabase.from('categories').select('*').order('name').then(({ data }) => {
+      if (data) setCategories(data)
+    })
+  }, [])
 
   const set = (k) => (e) => {
     const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -56,6 +64,7 @@ function EditProductModal({ product, onClose, onSaved }) {
           old_price:   form.old_price ? Number(form.old_price) : null,
           image_url:   form.image_url.trim() || null,
           is_featured: form.is_featured,
+          category_id: form.category_id ? Number(form.category_id) : null,
         })
         .eq('id', product.id)
       if (error) throw error
@@ -109,6 +118,7 @@ function EditProductModal({ product, onClose, onSaved }) {
               <input value={form.name} onChange={set('name')} placeholder="Nom..." />
             </div>
           </div>
+
           <div className={styles.fieldRow}>
             <div className={styles.fieldGroup}>
               <label>Prix (FCFA)</label>
@@ -119,6 +129,21 @@ function EditProductModal({ product, onClose, onSaved }) {
               <input type="number" value={form.old_price} onChange={set('old_price')} placeholder="35000" />
             </div>
           </div>
+
+          <div className={styles.fieldRow}>
+            <div className={styles.fieldGroup} style={{ gridColumn: '1/-1' }}>
+              <label>Catégorie</label>
+              <select value={form.category_id} onChange={set('category_id')}>
+                <option value="">-- Choisir une catégorie --</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.emoji} {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className={styles.checkRow}>
             <label className={styles.checkLabel}>
               <input type="checkbox" checked={form.is_featured} onChange={set('is_featured')} />
