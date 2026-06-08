@@ -8,6 +8,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
   </React.StrictMode>
 )
+// Supprimer le loader une fois React monté
+const loader = document.getElementById('app-loader')
+if (loader) loader.remove()
 
 // ❌ TEMPORAIREMENT COMMENTÉ POUR DEBUG
 // if ('serviceWorker' in navigator) {
